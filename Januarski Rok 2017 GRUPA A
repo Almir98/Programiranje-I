@@ -1,0 +1,274 @@
+#include<iostream>
+#include<iomanip>
+using namespace std;
+
+											       // JANUAR  2017                             GRUPA A 
+
+//1 ZADATAK
+/*
+Text BoxPoštujući faze programiranja napisati program za računanje binominalnog koeficijenta b prema sljedećoj formuli.
+ Učitati prirodne brojeve n i k (n mora biti veći od k). Ako taj uvjet nije ispunjen ponoviti učitavanja. Koristiti posebnu
+funkciju za računanje binomnog koeficijenta. Naći i ispisati binomni koeficijent koji je jednak sljedećoj formuli:
+*/
+
+int faktorijel(int broj)
+{
+	int fak = 1;
+	for (int i = 1; i <= broj; i++)
+		fak = fak * i;
+	return fak;
+}
+
+int main()
+{
+	int n, k, razlika, b = 0;
+	do
+	{
+		cout << "Unesi n i k" << endl;
+		cin >> n >> k;
+	} while (n < 0 || k < 0 || n < k);
+
+	razlika = n - k;
+	b = faktorijel(n) / (faktorijel(k)*faktorijel(razlika));
+	cout << "Binomalni faktorijel je : " << b;
+	system("pause>0");
+	return 0;
+}
+
+
+//2 ZADATAK
+// DOBAR BROJ
+
+/*
+Napisati program koji će učitati prirodni broj  n<=10, a zatim n cijelih brojeva. Za svaki broj treba ispitati radi li se o broju koji je
+ 'dobar'. Zatim sve dobre brojeve prebaciti u novi niz te ispisati njegove elemente i veličinu. Koristiti zasebne funkcije za unos
+ i provjeru je li broj dobar.
+
+Napomena: Broj  je „dobar“ ako je svaka njegova cifra veća od zbira cifara koji se nalaze desno od nje. Na primjer, 9620 je „dobar“ jer
+ je 2>0, 6>2+0, 9>6+2+0. Drugi primjeri: 8421, 95210, 732. 621, 852 itd.
+*/
+
+
+bool dobar(int broj)
+{
+	int suma = 0, cifra;
+	cifra = broj % 10;
+	suma += cifra;
+	broj = broj / 10;
+
+	while (broj > 0)
+	{
+		cifra = broj % 10;
+		if (cifra <= suma)
+		{
+			return false;
+		}
+		suma = suma + cifra;
+		broj = broj / 10;
+	}
+	return true;
+}
+
+int unos(int niz[], int n)
+{
+	int clan, brojac = 0;
+
+	for (int i = 0; i < n; i++)
+	{
+		cout << "Unesi " << i + 1 << " clan : ";
+		cin >> clan;
+		if (dobar(clan) == true)
+		{
+			niz[brojac++] = clan;
+		}
+	}
+	return brojac;
+}
+
+void ispis(int niz[], int brojac)
+{
+	for (int i = 0; i < brojac; i++)
+	{
+		cout << "  " << niz[i];
+	}
+}
+
+int main()
+{
+	const int vel = 10;
+	int niz[vel];
+	int n;
+	do
+	{
+		cout << "Unesi velicinu niza : ";
+		cin >> n;
+		n--;
+	} while (n < 0 || n>10);
+	int stvarna_vel = unos(niz, n);
+
+	ispis(niz, stvarna_vel);
+
+	system("pause>0");
+	return 0;
+}
+
+
+//3 ZADATAK
+
+// MEDIJ I SORTIRANJE 
+/*
+Napisati glavni program i funkciju medij koja se poziva naredbom medij(v,n) i koja nalazi medijan tj.  srednji član u sortiranom nizu v.
+Ako je n paran, tada je medijan aritmetička sredina od srednja dva člana. Ako je n neparan, tada je medijan član u sredini (na n/2-om mjestu).
+U glavnom programu korisnik unosi veličinu niza n (1<=n<=10) te članove niza koje prije proslijeđivanja funkciji sortira, poziva funkciju te ispisom na
+ekran dobija medijan.
+*/
+
+void unos(int niz[], int vel)
+{
+	for (int i = 0; i < vel; i++)
+	{
+		cin >> niz[i];
+	}
+}
+
+void ispis(int niz[], int vel)
+{
+	for (int i = 0; i < vel; i++)
+	{
+		cout << "  " << niz[i];
+	}
+}
+float medij(int niz[], int vel)
+{
+	if (vel % 2 == 0)
+	{
+		return niz[vel / 2] + niz[vel / 2 - 1];
+	}
+	else
+		return niz[vel / 2];
+}
+void sortiranje(int niz[], int vel)
+{
+	int temp;
+	bool promjena = true;
+	while (promjena)
+	{
+		promjena = false;
+		for (int i = 0; i < vel-1; i++)
+		{
+			if (niz[i] > niz[i + 1])
+			{
+				temp = niz[i];
+				niz[i] = niz[i+1];
+				niz[i + 1] = temp;
+				promjena = true;
+			}
+		}
+	}
+}
+
+int main()
+{
+	const int vel = 10;
+	int niz[vel];
+	int n;
+	do
+	{
+		cout << "Unesite vel niza: ";
+		cin >> n;
+	} while (n < 0 || n>10);
+
+	unos(niz, n);
+	ispis(niz, n);
+	sortiranje(niz, n);
+	cout << endl;
+	ispis(niz, n);
+
+	cout << "Medij je : " << medij(niz, n);
+
+	system("pause>0");
+	return 0;
+}
+
+
+//4 ZADATAK
+
+// SIMETRICNOST MATRICE
+
+/*
+Napisati program koji će učitati cijeli broj n (1≤n≤10), (ukoliko unesena vrijednost nije unutar intervala, učitavanje treba ponavljati sve dok se
+ne unese ispravna vrijednost) i elemente matrice dimenzija n x n te ispisati je li matrica centralno simetrična s obzirom na središnji element. 
+Ako jest, program treba ispisati 1, ako nije, ispisati 0, a ako je broj redaka paran broj  (pa nema središnjeg elementa), ispisati -1. 
+Koristiti zasebne funkcije za unos elemenata i provjeru simetričnosti.
+*/
+
+
+const int vel = 10;
+
+void unos(int matrica[][vel],int n)
+{
+	for (int i = 0; i < n; i++)
+	{
+		for (int j = 0; j < n; j++)
+		{
+			cin >> matrica[i][j];
+		}
+	}
+}
+
+void ispisi(int matrica[][vel], int n)
+{
+	for (int i = 0; i < n; i++)
+	{
+		for (int j = 0; j < n; j++)
+		{
+			cout << setw(5) << matrica[i][j];
+		}
+		cout << endl;
+	}
+}
+int ispis(int matrica[][vel], int n)
+{
+	int rez = 0;
+	for (int i = 0; i < n; i++)
+	{
+		for (int j = 0; j < n; j++)
+		{
+			if (matrica[i][j] != matrica[n - j - 1][n - i - 1]);
+			{
+				rez = 0;
+				return rez;
+			}
+		}
+	}
+	rez = 1;
+	return rez;
+}
+int main()
+{
+	int matrica[vel][vel];
+	int n;
+	do
+	{
+		cout << "Unesi vel matrice: ";
+		cin >> n;
+	} while (n < 0 || n>10);
+	int rezultat;
+
+	if (n % 2 == 0)
+	{
+		rezultat = -1;
+		cout << "Matrica ima paran broj redova i kolona " << rezultat;
+	}
+	else
+	{
+		unos(matrica,n);
+		ispisi(matrica,n);
+		cout<<ispis(matrica,n);
+	}
+
+	system("pause>0");
+	return 0;
+}
+
+
