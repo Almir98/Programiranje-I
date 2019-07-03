@@ -1,0 +1,299 @@
+#include<iostream>
+#include<iomanip>
+using namespace std;
+
+							////////////////////////////////   GRUPA B 2017 JANUAR ////////////////////////////////////////////
+
+
+/*
+Zadatak 1:
+
+Poštujući sve faze programiranja napisati program kojim će se izračunati 20 uzastopnih vrijednosti brzine i prijeđenog puta objekta u slobodnom padu u razmaku od po 3
+sec. Izračunate vrijednosti brzine i prijeđenog puta smjestiti u odvojene nizove od po 20 elemenata, te ispisati na ekranu uzastopno brzinu i prijeđeni put
+zajedno za svaki period od 3 sec. Obratiti pažnju da se koriste ispravni tipovi podataka. Za izračun brzine slobodnog pada te prijeđenog puta pri slobodnom padu
+koristiti zasebne funkcije.
+
+Formula za brzinu slobodnog pada je: v=g*t  //g=9.81
+
+Formula za prijeđeni put pri slobodnom padu je: s=(g/2)*pow(t,2)  //g=9.81
+
+Primjer izlaza:
+Situacija u 3-oj sekundi je:
+	 Brzina: 29.43 Prijeđeni put: 44.145
+Situacija u 6-oj sekundi je:
+	 Brzina: 58.86 Prijeđeni put: 176.57
+
+Text BoxSituacija u 9-oj sekundi je:
+	 Brzina: 88.29 Prijeđeni put: 397.305
+
+*/
+
+const float g = 9.81;
+
+float brzina(int t)
+{
+	return g * t;
+}
+float put(int t)
+{
+	return (g / 2)*pow(t, 2);
+}
+int main()
+{
+	int t;
+	for (int i = 1; i <=20; i++)
+	{
+		t = i * 3;
+		cout << "Situacija u " << t << " sekudni je : " << endl;
+		cout <<"Brzina je : "<<brzina(t);
+		cout <<"   Put je : "<<put(t)<< endl<<endl;
+	}
+	system("pause>0");
+	return 0;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// GOLDBAHOVO PRAVILO
+
+/*
+Zadatak 2:
+
+Text BoxSvaki paran broj može se prikazati kao suma dvaju  prostih  brojeva  (tkzv.  Goldbachovo  pravilo). Razraditi logiku programa koji će najprije učitati 
+dva prirodna broja n1 i n2. Ako je n1 > n2 zamijeniti n1 sa n2. Prikazati sve parne brojeve u intervalu n1 do n2 kao sumu dvaju prostih brojeva.
+U glavnom programu samo unijeti navedena dva prirodna broja i pozvati funkciju koja obavlja zadani posao.
+
+*/
+
+
+bool prost(int broj)
+{
+	for (int i = 2; i < broj; i++)
+	{
+		if (broj%i == 0)
+		{
+			return false;
+		}
+	}
+	return true;
+}
+void goldbah(int n1, int n2)
+{
+	int suma = 0;
+
+	for (int i =n1; i <=n2 ; i++)
+	{
+		if (prost(i) == true)
+		{
+			for (int j = i; j <=n2; j++)
+			{
+				if (prost(j) == true)
+				{
+					suma = i + j;
+					cout << i << " + " << j << " = " << suma << endl;
+				}
+			}
+		}
+	}
+}
+
+int main()
+{
+	int n1, n2, zamjena;
+	do
+	{
+		cout << "Unesi n1 i n2 : ";
+		cin >> n1 >> n2;
+	} while (n1 < 0 || n2 < 0);
+	if (n1 > n2)
+	{
+		zamjena = n1;
+		n1 = n2;
+		n2 = zamjena;
+	}
+	goldbah(n1, n2);
+
+	system("pause>0");
+	return 0;
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////
+// ZADATAK 3
+
+/*
+Napisati program koji računa koliko je dana proteklo između dva datuma u istoj godini. Pretpostavka je da će korisnik unijeti prvo manji (dan, mjesec i godinu),
+a zatim veći datum (dan, mjesec i godinu). Potrebno je da uneseni dani budu u rasponu od 1-31, mjeseci u rasponu od 1-12 i da su godine jednake.
+Ukoliko je bilo šta od navedenog narušeno za jedan od datuma, unos se ponavlja. Voditi računa i da unesena godina može biti prestupna 
+(svaka godina koja je djeljiva sa 4, nije djeljiva sa 100 ili je djeljiva sa 400; npr. 1600. jeste prestupna, jer je djeljiva sa 400, 2017. nije prestupna jer ne
+ispunjava niti jedan od uslova).
+
+Text BoxPomoć: Za potrebe pronalaska broja dana u mjesecu koristiti sljedeći niz (sa eventualnom izmjenom za prestupnu godinu):
+int broj_dana[] = { 31,28,31,30,31,30,31,31,30,31,30,31 };
+
+*/
+
+int main()
+{
+	const int vel = 12;
+	int d1, m1, g1, d2, m2, g2;
+	int broj_dana[vel] = { 31,28,31,30,31,30,31,31,30,31,30,31 };
+
+	do
+	{
+		cout << "Unesi prvi datum: ";
+		cin >> d1 >> m1 >> g1;
+		cout << "Unesi drugi datum: ";
+		cin >> d2 >> m2 >> g2;
+	} while (d1 < 0 || d1>31 || d2 < 0 || d2>31 || m1 < 0 || m1>12 || m2 < 0 || m2>12 || m1>m2 || g1 != g2);
+
+	cout <<"Prvi datum  "<< d1 << "." << m1 << "." << g1 << endl;
+	cout <<"Drugi datum  "<<d2 << "." << m2 << "." << g2 << endl;
+
+	int ostalo = 0;
+
+	if (m1 == m2)
+	{
+			ostalo = d2 - d1;
+			cout << "Razlika dana je " << ostalo << endl;
+	}
+	else
+	{
+		int suma = 0, dana = 0;
+
+		dana = broj_dana[m1] - d1;
+		suma += dana;
+
+		for (int i = m1+1; i <=m2; i++)
+		{
+			suma += broj_dana[i];
+		}
+
+		int ostaci = broj_dana[m2] - d2;
+		suma = suma - ostaci;
+		cout << "Razlika dana je " << suma << endl;
+
+	}
+	system("pause>0");
+	return 0;
+}
+
+/////////////////////////////////////////////////  ZADATAK SA MATRICOM JANAUR 2017 
+
+/*
+Deklarisati kvadratnu matricu cijelih brojeva proizvoljnih dimenzija sa parnim brojem redova, te implementirati sljedeće funkcije:
+
+Funkciju za unos i formiranje elemenata matrice prema sljedećem obrascu: elemente neparnih redova matrice (1., 3., 5. itd.) čine brojevi koje unosi korisnik programa;
+elementi parnih redova matrice se formiraju na osnovu elemenata iz prethodnog reda u istoj koloni matrice i to na način da je svaki novokreirani element matrice
+zapravo srednja cifra broja koji se u matrici nalazi iznad njega. Za pronalazak srednje cifre broja kreirati zasebnu funkciju srednja_cifra, te je pozvati u funkciji
+unos. Srednju cifru brojeva sa parnim brojem cifara formirati kao srednju vrijednost dvaju cifara u sredini, npr. broj 4213 ima dvije srednje cifre,
+te funkcija treba da kao srednju cifru vrati vrijednost količnika cifre 2 i 1 zaokružene na veću decimalnu, u konkretnom slučaju broj 2.
+
+Funkciju max_element koja pronalazi element sa najvećim brojem cifara. Kreirati pomoćnu funkciju broj_cifara koja vraća broj cifara broja proslijeđenog kao parametar.
+
+Funkciju za ispis elemenata matrice sa parametrom tipa bool koji određuje da li se ispisuje kompletna matrica ili samo elementi matrice koje je unio korisnik
+(elementi neparnih redova).
+
+Napisati i kratak testni program koji demonstrira funcionalnost kreiranih funkcija.
+
+*/
+
+
+
+const int red = 4;
+int broj_cifara(int broj)
+{
+	int brojac = 0;
+	while(broj>0)
+	{
+		broj = broj / 10;
+		brojac++;
+	}
+	return brojac;
+}
+
+float srednja(int broj)
+{
+	int brcif = broj_cifara(broj);
+	if (brcif % 2 == 0)
+	{
+		int lijeva, desna;
+		lijeva = broj / pow(10, (brcif / 2));
+		desna = broj / pow(10, (brcif / 2 - 1));
+		return (lijeva % 10 + desna % 10) / 2 + 0.5;
+	}
+	else
+		return broj = broj / pow(10, brcif / 2);
+}
+
+void unos(int matrica[][red])
+{
+	for (int i = 0; i < red; i+=2)
+	{
+		for (int j = 0; j < red; j++)
+		{
+			cin >> matrica[i][j];
+			matrica[i + 1][j] = srednja(matrica[i][j]);
+		}
+	}
+}
+
+void ispis(int matrica[][red])
+{
+	for (int i = 0; i < red; i++)
+	{
+		for (int j = 0; j < red; j++)
+		{
+			cout << setw(5) << matrica[i][j];
+		}
+		cout << endl;
+	}
+}
+
+void novi_ispis(int matrica[][red], bool izbor)
+{
+	for (int i = 0; i < red; izbor?i++:i+=2)
+	{
+		for (int j = 0; j < red; j++)
+		{
+			cout << setw(5) << matrica[i][j];
+		}
+		cout << endl;
+	}
+}
+
+void max_element(int matrica[][red])
+{
+	int najv = 0, najvel = 0;
+	for (int i = 0; i < red; i++)
+	{
+		for (int j = 0; j < red; j++)
+		{
+			if (broj_cifara(matrica[i][j])>najv)
+			{
+				najv = broj_cifara(matrica[i][j]);
+				najvel = matrica[i][j];
+			}
+		}
+	}
+	cout << "Najveci element je " << najvel << " a on ima " << najv << " cifara " << endl;;
+}
+
+int main()
+{
+	int izbor;
+	int matrica[red][red];
+	unos(matrica);
+	ispis(matrica);
+	max_element(matrica);
+
+	do
+	{
+		cout << "1 za cijelu matricu, 0 za unesene redove?" << endl;
+		cin >> izbor;
+	} while (izbor < 0 || izbor>1);
+
+	novi_ispis(matrica,izbor);
+
+	system("pause>0");
+	return 0;
+}
