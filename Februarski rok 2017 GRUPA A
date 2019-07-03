@@ -1,0 +1,361 @@
+#include<iostream>
+#include<iomanip>
+using namespace std;
+
+
+											//          FEBRUARSKI ROK 2017                              GRUPA A
+
+/*
+Zadatak 1:
+
+Poštujući sve faze procesa programiranje, napisati program koji izračunava sumu svih brojeva u interval od 2 do n  koji su stepeni broja 2.
+Granična vrijednost n se unosi na početku glavnog programa, pri čemu je potrebno voditi računa da se podrži što veća granična vrijednost.
+Kreirati pomoćnu funkciju DaLiJeStepen2 za provjeru da li je proslijeđeni broj stepen broja 2 (stepeni broja 2 su: 2, 4, 8, 16, 32…).
+Izračun i ispis sume uraditi u glavnom programu.
+
+Unesite gornju granicu intervala: 64
+
+Suma brojeva koji se mogu napisati kao stepen broja 2 u intervalu [2, 64] je: 126
+*/
+
+
+bool dalijestepen(int broj)
+{
+	for (int i = 0; i < broj; i++)
+	{
+		if (pow(2, i) == broj)
+			return true;
+	}
+		return false;
+}
+
+int main()
+{
+	int n;
+	cin >> n;
+	int suma = 0;
+
+	for (int i = 2; i <=n ; i++)
+	{
+		if (dalijestepen(i) == true)
+		{
+			suma += i;
+		}
+	}
+	cout << "Suma je " << suma << endl;
+	system("pause>0");
+	return 0;
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+/*
+Napisati program koji od korisnika zahtijeva unos niza od najviše 20 realnih brojeva u rasponu od -100 do 100. U slučaju da korisnik unese bilo koji broj izvan
+datog raspona korisnik ponavlja unos tog elementa niza. Također, unos je moguće prekinuti prije nego što se dostigne kapacitet niza unosom broja 0 koji ne treba
+da bude element niza i služi samo za prekid. Nakon toga, program računa aritmetičku sredinu unesenih brojeva, te iz niza izbacuje sve one elemente
+čija je udaljenost od aritmetičke sredine veća od 10, na način da se sačuva redoslijed dodavanja elemenata. Implementaciju uraditi upotrebom sljedećih funkcija:
+
+void unos (double[], int, int&); gdje je treći parametar stvarna veličina niza nakon unosa;
+double aritmeticka_sredina(double[], int);
+void ukloni(double[], int, double, int&); gdje je drugi parametar aritmetička sredina, a posljednji veličina niza nakon uklanjanja elemenata.
+
+U glavnom programu testirati dostupne funkcije, te obaviti ispis elemenata niza nakon uklanjanja vodeći se datim primjerom izlaza.
+
+Unesite elemente niza: 2.5 -8.9 15.89 16.78 34 25 11 0
+
+Aritmeticka sredina elemenata niza iznosi: 13.75
+
+Sadrzaj niza nakon uklanjanja: 15.89 16.78 11.00
+*/
+
+
+void unos(double[], int, int&);
+void ispis(double[], int);
+double aritmeticka_sredina(double[], int);
+void ukloni(double[], int, double, int&);
+
+int main()
+{
+	const int vel = 20;
+	double niz[vel];
+	int brojac = 0;
+	int novavel = 0;
+	int sredina = 0;
+
+	unos(niz, vel, brojac);
+	ispis(niz, brojac);
+	cout << endl;
+	cout << "Aritmeticka sredina je : " << aritmeticka_sredina(niz, brojac);
+
+	sredina = aritmeticka_sredina(niz, brojac);
+
+	ukloni(niz, brojac, sredina, novavel);
+	cout << endl;
+	ispis(niz, novavel);
+
+	system("pause>0");
+	return 0;
+}
+
+void unos(double niz[], int vel, int& brojac)
+{
+	for (int i = 0; i < vel; i++)
+	{
+			cout << "Unesi " << i + 1 << " clan niza : ";
+			cin >> niz[i];
+			if (niz[i] < -100 || niz[i]>100)
+			{
+				cout << "Pogresan unos" << endl;
+				i--;
+				brojac--;            // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+			}
+			if (niz[i] == 0)
+			{
+				break;
+			}
+				brojac++;
+	}
+}
+
+void ispis(double niz[], int vel)
+{
+	for (int i = 0; i < vel; i++)
+		cout << "  " << niz[i];
+}
+
+double aritmeticka_sredina(double niz[], int vel)
+{
+	double suma = 0;
+	for (int i = 0; i < vel; i++)
+	{
+		suma += niz[i];
+	}
+	return double(suma / vel);
+}
+
+void ukloni(double niz[], int vel, double sredina, int& novavel)
+{
+	for (int i = 0; i < vel; i++)
+	{
+		if (abs(sredina-niz[i]) < 10)
+		{
+			niz[novavel++] = niz[i];
+		}
+	}
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+/*
+Test program za sortiranje niza Bubble sort algoritmom za sortiranje niza..
+*/
+
+void unos(int niz[], int vel)
+{
+	for (int i = 0; i < vel; i++)
+	{
+		cin >> niz[i];
+		if (niz[i] < 100 || niz[i]>1000)
+		{
+			cout << "Pogresan unos ! " << endl;
+			i--;
+		}
+	}
+}
+
+void ispis(int niz[], int vel)
+{
+	for (int i = 0; i < vel; i++)
+		cout<<"  "<<niz[i];
+}
+
+void sortiranje(int niz[], int vel)
+{
+	bool promjena = true;
+	int temp;
+	while (promjena)
+	{
+		promjena = false;
+		for (int i = 0; i < vel-1; i++)
+		{
+			if (niz[i] / 10 % 10 > niz[i+1] / 10 % 10)
+			{
+				temp = niz[i];
+				niz[i] = niz[i + 1];
+				niz[i + 1] = temp;
+				promjena = true;
+			}
+		}
+	}
+}
+int main()
+{
+	const int vel = 10;
+	int niz[vel];
+	int n;
+	do
+	{
+		cout << "Unesi velicinu niza: ";
+		cin >> n;
+	} while (n < 1 || n>10);
+
+	unos(niz, n);
+	ispis(niz, n);
+	cout << endl << "Sortirano\n";
+	sortiranje(niz, n);
+	ispis(niz, n);
+
+	system("pause>0");
+	return 0;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////7
+
+/*
+Zadatak 3:
+
+Napisati program koji će omogućiti:
+
+Unos 2D niza od 10x10 elemanata vodeći računa da su svi elementi dvocifreni (ukoliko unos nekog elementa ne zadovoljava uslov, ponavljati unos tog elementa 
+dok se ne zadovolji uslov) – Koristiti funkciju unos
+Izvršiti transpoziciju niza tako što će se zamjeniti redovi i kolone – Koristiti funkciju transpose, a zatim na osnovu izmijenjenog 2D niza:
+Izračunati aritmetičku sredinu svih prostih brojeva ispod sporedne dijagonale – Koristiti dvije funkcije: aritmeticka i prost_broj
+(pozivati će se iz funkcije aritmeticka)
+Napisati funkciju simpatican koja će provjeriti da li su brojevi iznad sporedne dijagonale simpatični*.
+
+Obavezno koristiti navedene funkcije, a parametre i eventualne povratne vrijednosti definisati prema potrebi. U main() funkciji napisati testni 
+program koji će omogućiti izvršenje svih funkcija navedenim redoslijedom.
+
+*/
+
+
+const int red = 10;
+
+void unos(int matrica[][red])
+{
+	for (int i = 0; i < red; i++)
+	{
+		for (int j = 0; j < red; j++)
+		{
+			cin >> matrica[i][j];
+			if (matrica[i][j] < 10 || matrica[i][j]>99)
+			{
+				cout << "Pogresan unos! " << endl;
+				j--;
+			}
+		}
+	}
+}
+
+void ispis(int matrica[][red])
+{
+	for (int i = 0; i < red; i++)
+	{
+		for (int j = 0; j < red; j++)
+		{
+			cout << setw(5) << matrica[i][j];
+		}
+		cout << endl;
+	}
+}
+void transponovanje(int matrica[][red])
+{
+	int temp;
+
+	for (int i = 0; i < red; i++)
+	{
+		for (int j = 0; j <i ; j++)
+		{
+			temp = matrica[i][j];
+			matrica[i][j] = matrica[j][i];
+			matrica[j][i] = temp;
+		}
+	}
+}
+bool prost(int broj)
+{
+	for (int i = 2; i < broj/2; i++)
+	{
+		if (broj%i == 0)
+			return false;
+	}
+	return true;
+}
+
+float aritmeticka(int matrica[][red])
+{
+	float suma = 0;
+	for (int i = 0; i < red; i++)
+	{
+		for (int j = 0; j < red; j++)
+		{
+			if (i + j >= red)
+			{
+				if (prost(matrica[i][j]) == true)
+				{
+					suma += matrica[i][j];
+				}
+			}
+		}
+	}
+	return suma;
+}
+bool simaptican(int broj)
+{
+	int kvadrat = broj * broj;
+	int sumakv = 0;
+	while (kvadrat > 0)
+	{
+		sumakv += kvadrat % 10;
+		kvadrat = kvadrat / 10;
+	}
+
+	int suma_broja = 0;
+	while (broj > 0)
+	{
+		suma_broja += broj % 10;
+		broj = broj / 10;
+	}
+
+	if (sumakv == suma_broja * suma_broja)
+		return true;
+	else
+		return false;
+}
+
+void iznad_sporedne(int matrica[][red])
+{
+	for (int i = 0; i < red; i++)
+	{
+		for (int j = 0; j < red; j++)
+		{
+			if (i + j <= red - 2)
+			{
+				if (simaptican(matrica[i][j]) == true)
+				{
+					cout << "Broj " << matrica[i][j] << " je simpatican" << endl;
+				}
+				else
+					cout << "Broj " << matrica[i][j] << " nije simpatican" << endl;
+			}
+		}
+	}
+
+}
+
+int main()
+{
+	int matrica[red][red];
+	unos(matrica);
+	ispis(matrica);
+	transponovanje(matrica);
+	cout << endl;
+	ispis(matrica);
+
+	cout << "Suma je: " << aritmeticka(matrica) << endl;
+
+	iznad_sporedne(matrica);
+
+	system("pause>0");
+	return 0;
+}
