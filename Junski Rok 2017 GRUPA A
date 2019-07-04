@@ -1,0 +1,384 @@
+#include<iostream>
+#include<iomanip>
+using namespace std;
+
+															//   JUNI   2017                    GRUPA A 
+
+
+/*
+Zadatak 1:
+
+Data su dva prirodna broja X i Y iz intervala od 10 do 5000. Poštujuci sve faze procesa programiranja, kreirati program koji ce pronaci i ispisati sve brojeve
+od X do Y (ukljucujuci granicne vrijednosti) cija je suma cifara djeljiva sa brojem koji se dobije u obrnutom poretku tih cifara. 
+U rješenju koristiti najmanje jednu funkciju.
+
+Npr. Za broj 144 vrijedi da mu je suma cifara 9 i da je broj koji se dobije nakon što se njegove cifre obrnu, 441, djeljiv sa 9.
+
+Definisite vrijednosti intervala [X, Y]: 11 150
+
+Brojevi koji ispunjavaju dati uslov: 18 20 21 24 27
+*/
+
+
+
+bool djeljiv(int broj)
+{
+	int cifara = broj;
+	int suma = 0, obrnut = 0;
+	while (broj > 0)
+	{
+		obrnut = obrnut * 10 + broj % 10;
+		broj = broj / 10;
+	}
+	while (cifara > 0)
+	{
+		suma += cifara % 10;
+		cifara = cifara / 10;
+	}
+	if (obrnut%suma == 0)
+		return true;
+	else
+		return false;
+}
+
+int main()
+{
+	int x, y, zamjena;
+	do
+	{
+		cin >> x >> y;
+	} while (x < 10 || y < 10 || x>5000 || y>5000);
+	if (x > y)
+	{
+		zamjena = x;
+		x = y;
+		y = zamjena;
+	}
+	for (int i = x; i < y; i++)
+	{
+		if (djeljiv(i) == true)
+			cout << i << endl;
+	}
+	system("pause>0");
+	return 0;
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+/*
+Zadatak 2:
+Napisati program koji omogucava unos karaktera sve dok se ne popuni niz od 30 elemenata prema sljedecim pravilima:
+Elementi niza mogu biti samo velika slova i brojevi.
+Svaki naredni element u nizu treba da bude abecedno poslije prethodnog, odnosno u slucaju broja, dalje od nule na brojnoj osi
+(voditi racuna da se medusobno porede samo slova i samo brojevi).
+Ukupna suma ASCII kodova unesenih elemenata ne smije biti veca od 1000.
+
+Izlaz iz programa treba da budu dobiveni elementi niza. Testni primjer je uraden za niz od 5 elemenata.
+
+Unesite veliko slovo ili broj: D
+Unesite veliko slovo ili broj: 3
+Unesite veliko slovo ili broj: A
+Unesite veliko slovo ili broj: F
+Unesite veliko slovo ili broj: 0
+Unesite veliko slovo ili broj: 4
+Unesite veliko slovo ili broj: R
+
+
+Text BoxElementi niza: D 3 F 4 R
+*/
+
+
+int kategorija(char slovo)
+{
+	if (int(slovo) >= 48 && int(slovo) <= 57)
+		return 1;
+	if (int(slovo) >= 58 && int(slovo) <= 90)
+		return 2;
+	else
+		return 3;
+}
+
+void unos(char niz[], int vel)
+{
+	int zadnjeslovo = 0, zadnjibroj = 0,suma = 0;
+
+	for (int i = 0; i < vel; i++)
+	{
+			cout << "Unesi " << i + 1 << " clan niza : ";
+			cin >> niz[i];
+			switch (kategorija(niz[i]))
+			{
+			case 1:
+				if (int(niz[i]) < zadnjibroj)
+				{
+					cout << "Manji od zadnjeg broja" << endl;
+					i--;
+				}
+				else
+				{
+					zadnjibroj = niz[i];
+					suma += int(niz[i]);
+				}
+				break;
+
+			case 2:
+				if (int(niz[i]) < zadnjeslovo)
+				{
+					cout << "Manji od zadnjeg slova" << endl;
+					i--;
+				}
+				else
+				{
+					zadnjeslovo = niz[i];
+					suma += int(niz[i]);
+				}
+				break;
+			case 3:
+				cout << "Nista od navedenog" << endl;
+				i--;
+				break;
+			}
+
+		if (suma > 1000)
+		{
+			cout << "ASCII suma prekoracena ! " << endl;
+			system("pause>0");
+			break;
+		}
+		cout << "ASCII suma je " << suma<<endl;
+	}
+	//cout << "ASCII suma je " << suma;
+}
+
+
+void ispis(char niz[], int vel)
+{
+	for (int i = 0; i < vel; i++)
+	{
+		cout << "  " << niz[i];
+	}
+}
+
+int main()
+{
+	const int vel = 30;
+	char niz[vel];
+
+	unos(niz, vel);
+	ispis(niz, vel);
+
+	system("pause>0");
+	return 0;
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+/*
+Zadatak 3:
+
+Napisati funkciju koja niz od 10 cijelih brojeva sortira u opadajucem ili rastucem poretku. Unos elemenata niza se obavlja u glavnom programu, kao
+i odabir opcije koja odreduje da li rezultirajuci niz treba biti opadajuci ili rastuci.
+Obavezno testirati implementiranu funkciju vodeci se datim primjerom ispisa.
+
+Unesite elemente niza: 12 2 3 0 45 6 98 -9 3 -10
+
+Kako zelite sortirati niz (unesite 1 ili 2):
+
+ 1 U opadajucem poretku
+ 2 U rastucem poretku
+
+
+Rezultirajuci niz: 98 45 12 6 3 3 2 0 -9 -10
+*/
+
+void sortiranje(int niz[], int vel,int izbor)
+{
+	bool promjena = true;
+	int temp;
+	while (promjena)
+	{
+		promjena = false;
+		for (int i = 0; i < vel-1; i++)
+		{
+			if ((niz[i] > niz[i + 1] && izbor == 1) || (niz[i] < niz[i + 1] && izbor == 2))
+			{
+				temp = niz[i];
+				niz[i] = niz[i + 1];
+				niz[i + 1] = temp;
+				promjena = true;
+			}
+		}
+	}
+}
+
+int main()
+{
+	const int vel = 10;
+	int niz[vel];
+	int izbor;
+
+	for (int i = 0; i < vel; i++)
+	{
+		cin >> niz[i];
+	}
+
+	for (int i = 0; i < vel; i++)
+	{
+		cout << "  " << niz[i];
+	}
+	do
+	{
+		cout << "Unesi izbor: ";
+		cin >> izbor;
+	} while (izbor < 1 || izbor>2);
+
+	sortiranje(niz, vel,izbor);
+
+	for (int i = 0; i < vel; i++)
+	{
+		cout << "  " << niz[i];
+	}
+
+	system("pause>0");
+	return 0;
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+/*
+Zadatak 4:
+
+Uz pomoc matrice realnih brojeva dimenzija 5x7 izraditi program za evidenciju i kalkulaciju uspješnosti vremenskih prognoza (prosjecnih dnevnih temperatura) 
+odredenog grada. Redovi matrice predstavljaju meteorologe cije se prognoze unose, dok se kolone odnose na vremenski period od 7 dana.
+Uz matricu je neophodno krerati globalni jednodimenzionalni niz od 7 elemenata koji ce cuvati stvarna mjerenja temperatura za isti vremenski period,
+a na osnovu kojeg ce se procijeniti uspješnost prognoza pojedinih meteorologa. Vrijednosti elemenata ovog niza 
+prilikom deklaracije postaviti na: 25.5, 26.8, 21, 32, 35.6, 36, 33.5.
+
+Implementaciju programa uraditi pomocu sljedecih funkcija:
+
+UnesiPrognoze – funkcija za unos prognoza odredenog meteorologa za kompletan period od 7 dana.
+Vrijednosti prosjecnih temperatura moraju biti unutar intervala [-20, 50] °C. (Pojasnjenje: unose se podaci za samo jedan izabrani red.)
+
+IzracunajUspjesnost – funkciju koja vraca procentualnu vrijednost uspješnosti prognoza za željenog meteorologa.
+Prognoza, odnosno prosjecna temperatura na odredeni dan, smatra se uspješnom ako od stvarnog mjerenja ne odstupa više od 5 °C.
+(Pojasnjenje: poredi se podaci iz jednog reda odnosno za jednog meteorologa sa podacima iz posebnog niza koji sadrži stvarne vrijednosti mjerenja,
+te ako je razlika manja od +/-5 taj podatak se smatra uspjesnom prognozom.)
+
+PronadjiNajuspjesnijegMeteorologa – funkciju koja pronalazi meteorologa sa najtacnijim vremenskim prognozama, odnosno najvecim procentom uspjeha.
+(Pojasnjenje: Red koji ima najveci procenat koji se dobije iz prethodno opisane funkcije IzracunajUspjesnost je u stvari red sa najuspjesnijim meteorologom.)
+
+PronadjiDanSaNajnizimPrognozama – funkciju koja pronalazi dan koji je imao u prosjeku najnize prognoze.
+
+Napisati i kratak testni program za provjeru ispravnosti implementiranih funkcija.
+*/
+
+
+const int red = 4;
+int niz[red] = { 25,16,32,30 };
+
+void unos(int matrica[][red])
+{
+	for (int i = 0; i < red; i++)
+	{
+		for (int j = 0; j < red; j++)
+		{
+			cin >> matrica[i][j];
+			if (matrica[i][j] < -20 || matrica[i][j]>50)
+			{
+				cout << "Ponovi " << endl;
+				j--;
+			}
+		}
+	}
+}
+
+void ispis(int matrica[][red])
+{
+	for (int i = 0; i < red; i++)
+	{
+		for (int j = 0; j < red; j++)
+		{
+			cout<<setw(5)<<matrica[i][j];
+		}
+		cout << endl;
+	}
+}
+
+float izracunaj(int matrica[][red],int izbor)
+{
+	int brojac = 0;
+	for (int i = 0; i < red; i++)
+	{
+		if (abs(matrica[izbor][i] - niz[i]) < 5)
+			brojac++;
+	}
+
+	return brojac * 100 / 4;
+}
+void najuspjesniji(int matrica[][red])
+{
+	int indeks;
+	int brojac = 0;
+	int rezultat = 0;
+	int najbolji = 0;
+
+	for (int i = 0; i <red; i++)
+	{
+		for (int j = 0; j < red; j++)
+		{
+			if (abs(matrica[i][j] - niz[i]) < 5)
+			{
+				brojac++;
+			}
+			rezultat = brojac * 100 / 4;                                             
+		}
+			if (rezultat > najbolji)
+			{
+				najbolji = rezultat;
+				indeks = i;
+			}
+			rezultat = 0;
+	}
+	cout << "Najuspjesniji je" << indeks + 1 << endl;
+}
+void dan(int matrica[][red])
+{
+	int indeks,najnize=99999,prosjek=0,suma = 0;
+
+	for (int i = 0; i < red; i++)
+	{
+		for (int j = 0; j < red; j++)
+		{
+			suma += matrica[j][i];
+		}
+		prosjek = suma / 5;
+
+		if (prosjek < najnize)
+		{
+			najnize = prosjek;
+			indeks = i;
+		}
+		suma = 0;
+	}
+	cout << "Dan sa najmanjim temp je " << indeks+1<< endl;
+}
+int main()
+{
+	int matrica[red][red];
+	unos(matrica);
+	ispis(matrica);
+	int izbor;
+	do
+	{
+		cout << "Unesite meteorologa" << endl;
+		cin >> izbor;
+		izbor--;
+	} while (izbor < 0 || izbor>5);
+
+	cout << izracunaj(matrica, izbor);
+	cout << endl;
+	najuspjesniji(matrica);
+	dan(matrica);
+	system("pause>0");
+	return 0;
+}
