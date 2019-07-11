@@ -1,6 +1,10 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 														 // AUGUST 2017                 GRUPA A
 
+#include<iostream>
+#include<iomanip>
+using namespace std;
+
 bool savrsen(int broj)
 {
 	int suma = 0;
