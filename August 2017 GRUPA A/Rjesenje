@@ -1,0 +1,145 @@
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+														 // AUGUST 2017                 GRUPA A
+
+bool savrsen(int broj)
+{
+	int suma = 0;
+
+	for (int i = 1; i < broj; i++)
+	{
+		if (broj%i == 0)
+		{
+			suma += i;
+		}
+	}
+	if (suma == broj)
+		return true;
+	else
+		return false;
+}
+
+int main()
+{
+	int x, y, brojac = 0;
+	float suma = 0;
+
+	cin >> x >> y;
+	for (int i = x; i <= y; i++)
+	{
+		if (savrsen(i) == true)
+		{
+			suma += i;
+			brojac++;
+		}
+	}
+	cout <<"Aritmeticka sredina je : "<<float(suma / brojac);
+
+	system("pause>0");
+	return 0;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+void unos(int niz[], int vel, int broj, int &brojac)
+{
+	int cifra;
+	while (broj > 0)
+	{
+		cifra = broj % 10;
+		if (cifra % 2 != 0)
+		{
+			niz[brojac++] = cifra;
+		}
+		broj = broj / 10;
+	}
+}
+void sortiraj(int niz[], int vel)
+{
+	bool promjena = true;
+	int temp;
+	while (promjena)
+	{
+		promjena = false;
+		for (int i = 0; i < vel-1; i++)
+		{
+			if (niz[i] > niz[i + 1])
+			{
+				temp = niz[i];
+				niz[i] = niz[i + 1];
+				niz[i + 1] = temp;
+				promjena = true;
+			}
+		}
+	}
+}
+void ispis(int niz[], int vel)
+{
+	for (int i = 0; i < vel; i++)
+		cout << "  " << niz[i];
+}
+int main()
+{
+	const int vel = 10;
+	int niz[vel];
+	int n;
+	cin >> n;
+	int brojac = 0;
+	unos(niz, vel, n, brojac);
+	sortiraj(niz, brojac);
+	ispis(niz, brojac);
+
+
+	system("pause>0");
+	return 0;
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void ispis(char niz[], int vel){
+	for (int i = 0; i < vel; i++)
+		cout << niz[i];
+}
+
+void pretraga(char recenica[], int size1, char rijec[], int size2,int&velNova)
+{
+	bool pogodak = true;
+	int brojac = 0;
+	for (int i = 0; i < size1; i++)
+	{
+		brojac = i;
+		if (recenica[i] == rijec[0])                                   // MISTERIJA RIJESENA
+		{
+			for (int j = 0; j < size2; j++)
+			{
+				if (recenica[brojac++] != rijec[j])
+					pogodak = false;
+				break;
+			}
+			if (pogodak == true)
+			{
+					recenica[velNova++] = 'F';
+					recenica[velNova++] = 'I';
+					recenica[velNova++] = 'T';
+					i += size2;
+			}
+		}
+		recenica[velNova++] = recenica[i];
+	}
+	ispis(recenica, velNova);
+}
+int main()
+{
+	const int size1 = 200;
+	const int size2 = 10;
+	int velNova = 0;
+	char recenica[size1] = { "Ja studiram na fakultetu jer zelim biti expert."};
+	char rijec[size2] = { "fakultet" };
+	ispis(recenica, strlen(recenica)+1);
+	cout << endl;
+	pretraga(recenica, strlen(recenica), rijec, strlen(rijec),velNova);
+
+	system("pause>0");
+	return 0;
+}
+
