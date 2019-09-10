@@ -1,0 +1,204 @@
+#include<iostream>
+using namespace std;
+   
+                                                          // SEPTEMBAR 2017                    GRUPA A
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+2 ZADATAK
+
+
+int broj_cifara(int broj)
+{
+	int brojac = 0;
+	while (broj > 0)
+	{
+		broj= broj/10;
+		brojac++;
+	}
+	return brojac;
+}
+float srednja_cifra(int broj)
+{
+	int brcif = broj_cifara(broj);
+	if (brcif % 2 == 0)
+	{
+		int lijeva = broj / pow(10, brcif / 2);
+		int desna = broj / pow(10, brcif / 2 - 1);
+		return float((lijeva % 10 + desna % 10) / 2 + 0.5);
+	}
+	else
+	{
+		broj = broj / pow(10, brcif / 2);
+		return broj % 10;
+	}
+}
+
+int main()
+{
+	int n;
+	cin >> n;
+	int x;
+	for (int i = 1; i <=n ; i++)
+	{
+		if (srednja_cifra(n)*i > n)
+		{
+			x=i;
+			break;
+		}
+	}
+	cout << x;
+	system("pause>0");
+	return 0;
+}
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+ZADATAK 3
+
+
+void ispis(char niz[], int vel){
+	for (int i = 0; i < vel; i++)
+		cout << niz[i];
+}
+
+void pretraga(char recenica[], int size1, char rijec[], int size2,int&velNova)
+{
+	bool pogodak = true;
+	int brojac = 0;
+	for (int i = 0; i < size1; i++)
+	{
+		brojac = i;
+		if (recenica[i] == rijec[0])                                  
+		{
+			for (int j = 0; j < size2; j++)
+			{
+				if (recenica[brojac++] != rijec[j])
+					pogodak = false;
+				break;
+			}
+			if (pogodak == true)
+			{
+					recenica[velNova++] = 'F';
+					recenica[velNova++] = 'I';
+					recenica[velNova++] = 'T';
+					i += size2;
+			}
+		}
+		recenica[velNova++] = recenica[i];
+	}
+	ispis(recenica, velNova);
+}
+int main()
+{
+	const int size1 = 200;
+	const int size2 = 10;
+	int velNova = 0; 
+	char recenica[size1] = { "Ja studiram na fakultetu jer zelim biti expert."};
+	char rijec[size2] = { "fakultet" };
+	ispis(recenica, strlen(recenica)+1);
+	cout << endl;
+	pretraga(recenica, strlen(recenica), rijec, strlen(rijec),velNova);
+
+	system("pause>0");
+	return 0;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+ZADATAK 4 
+
+
+
+const int red = 10;
+
+void unos(int matrica[][red])
+{
+	for (int i = 0; i < red; i++)
+	{
+		for (int j = 0; j < red; j++)
+		{
+			matrica[0][0] = 1;
+			matrica[i][j] = matrica[i][j - 1] * 2;
+		}
+	}
+}
+
+void ispis(int matrica[][red])
+{
+	for (int i = 0; i < red; i++)
+	{
+		for (int j = 0; j < red; j++)
+		{
+			if (matrica[i][j] == 0)
+				break;
+			cout <<setw(14)<<matrica[i][j];
+		}
+		cout << endl;
+	}
+}
+
+void transponovanje(int matrica[][red])
+{
+	int temp;
+	for (int i = 0; i < red; i++)
+	{
+		for (int j = 0; j < i; j++)
+		{
+			temp = matrica[i][j];
+			matrica[i][j] = matrica[j][i];
+			matrica[j][i] = temp;
+		}
+	}
+}
+
+void zamjena( int matrica[][red],int red1,int red2)
+{
+	int temp;
+	for (int i = 0; i < red; i++)
+	{
+		temp = matrica[red1][i];
+		matrica[red1][i] = matrica[red2][i];
+		matrica[red2][i] = temp;
+	}
+}
+
+void sortiranje(int matrica[][red], int kolona)
+{
+	bool promjena = true;
+	while (promjena)
+	{
+		promjena = false;
+		for (int i = 0; i < red; i++)
+		{
+			if (matrica[i][kolona] < matrica[i + 1][kolona])
+			{
+				zamjena(matrica, i, i + 1);
+				promjena = true;
+			}
+		}
+	}
+}
+
+int main()
+{
+	int matrica[red][red];
+	unos(matrica);
+	ispis(matrica);
+	transponovanje(matrica);
+	ispis(matrica);
+	int kolona;
+	do
+	{
+		cout << "Unesite po kojoj koloni zelite sortiranje : ";
+		cin >> kolona;
+		kolona--;
+	} while (kolona < 0 || kolona>4);
+
+	sortiranje(matrica, kolona);
+	ispis(matrica);
+	system("pause>0");
+	return 0;
+}
