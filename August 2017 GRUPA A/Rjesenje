@@ -112,7 +112,7 @@ void pretraga(char recenica[], int size1, char rijec[], int size2,int&velNova)
 	for (int i = 0; i < size1; i++)
 	{
 		brojac = i;
-		if (recenica[i] == rijec[0])                                   // MISTERIJA RIJESENA
+		if (recenica[i] == rijec[0])                                  
 		{
 			for (int j = 0; j < size2; j++)
 			{
